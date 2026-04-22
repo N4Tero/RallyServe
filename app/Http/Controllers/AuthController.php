@@ -8,25 +8,33 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Validation\Rules\Password as PasswordRule;
 
 class AuthController extends Controller
 {
     // --- 1. Handle Sign Up (Registration) ---
-    public function register(Request $request)
+   public function register(Request $request)
     {
-        // Validate the incoming form data
+        // 1. Validate the incoming form data
         $incomingFields = $request->validate([
             'name' => ['required', 'min:3', 'max:50'],
             'email' => ['required', 'email', 'unique:users,email'],
             'password' => ['required', 'min:8', 'confirmed'] 
         ]);
 
-        // Securely hash the password before saving to database
+        // 2. Securely hash the password before saving to database
         $incomingFields['password'] = Hash::make($incomingFields['password']); 
-        $user = User::create($incomingFields);// Create the user in the database
-        Auth::login($user); // Create the user in the database
+        
+        // 3. Create the user in the database (Now $user officially exists!)
+        $user = User::create($incomingFields);
+        
+        // 4. THE FIX: Fire the email event now that we know who $user is
+        event(new Registered($user));
 
-        return redirect('/');
+        // 5. Log them in and redirect
+        Auth::login($user); 
+        return redirect()->route('verification.notice');
     }
 
     // --- 2. Handle Log In ---
@@ -42,7 +50,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             
             // --- NEW: The Traffic Cop Logic ---
-            $role = auth()->user()->role;
+            $role = Auth::user()->role;
             
             if ($role === 'admin' || $role === 'staff') {
                 return redirect('/admin/dashboard'); // Send staff here

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rally Serve</title>
+    <title>Rally Reserve</title>
     
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -26,7 +26,7 @@
 </nav>
         
        
-    <h1 class="text-2xl font-bold">Rally Serve</h1>
+    <h1 class="text-2xl font-bold">Rally Reserve</h1>
     <div class="auth-buttons">
   @auth
         <span class="user-greeting">Hi, {{ auth()->user()->name }}</span>

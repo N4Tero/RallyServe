@@ -5,7 +5,7 @@
     <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.4); z-index: 1;"></div>
 
     <div class="text-overlay" style="position: relative; z-index: 2; text-align: center; color: white; margin-bottom: 2.5rem; text-shadow: 0 2px 4px rgba(0,0,0,0.5);">
-        <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem;">Welcome to Rally Serve</h1>
+        <h1 style="font-size: 3rem; font-weight: 800; margin-bottom: 0.5rem;">Welcome to Rally Reserve</h1>
         <p style="font-size: 1.25rem; font-weight: 600;">Book your perfect Pickleball Court.</p>
         <p style="font-size: 1rem; opacity: 0.9; max-width: 600px; margin: 0 auto;">Discover, compare, and reserve top-rated indoor and outdoor courts instantly. Stop calling around, start rallying.</p>
     </div>
@@ -48,7 +48,7 @@
 
       <div class="tournaments-grid">
         
-        @forelse ($tournaments as $tournament)
+      @forelse ($tournaments as $tournament)
           <div class="tournament-card">
             <div class="card-top">
               <div>

@@ -11,7 +11,11 @@
     "require": {
         "php": "^8.2",
         "laravel/framework": "^12.0",
-        "laravel/tinker": "^2.10.1"
+        "laravel/tinker": "^2.10.1",
+        "nyholm/psr7": "*",
+        "railsware/mailtrap-php": "*",
+        "symfony/http-client": "*",
+        "symfony/mailer": "*"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",

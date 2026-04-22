@@ -14,8 +14,13 @@ return [
     |
     */
 
-    'default' => env('MAIL_MAILER', 'log'),
-
+    'mailers' => [
+    
+            // start mailtrap transport
+            'mailtrap-sdk' => [
+                'transport' => 'mailtrap-sdk'
+            ],
+    ],
     /*
     |--------------------------------------------------------------------------
     | Mailer Configurations
