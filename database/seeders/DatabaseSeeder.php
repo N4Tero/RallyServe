@@ -15,11 +15,36 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        // Create your Admin/Test User
+    \App\Models\User::create([
+        'name' => 'Test Admin',
+        'email' => 'admin@gmail.com',
+        'password' => bcrypt('password123'),
+        'role' => 'admin',
+        'email_verified_at' => now(),
+    ]);
+    \App\Models\User::create([
+        'name' => 'Test User',
+        'email' => 'user@gmail.com',
+        'password' => bcrypt('password1234'),
+        'role' => 'user',
+        'email_verified_at' => now(),
+    ]);
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+    // Create the Facility
+    $facility = \App\Models\Facility::create([
+        'facility_name' => 'JG Oranza Sports Center Arena',
+        'address' => 'Buayan, General Santos',
+        'contact_number' => '09123456789',
+        'facility_image' => 'facilities/jg-oranza.jpg'
+    ]);
+
+    // Create the Courts
+    $facility->courts()->create([
+        'court_name' => 'Court 1',
+        'surface_type' => 'Hard Court',
+        'hourly_rate' => 350.00,
+        'status' => 'Active'
+    ]);
     }
 }

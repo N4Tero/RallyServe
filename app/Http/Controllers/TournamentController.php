@@ -14,20 +14,27 @@ class TournamentController extends Controller
     }
 
     // 2. Save the tournament to the database
-    public function store(Request $request)
-    {
-        $validated = $request->validate([
-            'title' => 'required|string|max:255',
-            'date_range' => 'required|string|max:255', // e.g., "March 26-27 2026"
-            'format' => 'required|string|max:255',     // e.g., "Singles & Mix Doubles"
-            'status' => 'required|string|max:50',      // e.g., "Soon", "Registration Open"
-            'prize_details' => 'required|string|max:255', // e.g., "PHP 10,000"
-            'registration_link' => 'nullable|url',     // Optional URL
-        ]);
+   public function store(Request $request)
+{
+    // 1. Update validation to match the NEW input names
+    $validated = $request->validate([
+        'name' => 'required|string|max:255',
+        'start_date' => 'required|date|after_or_equal:today',
+        'end_date' => 'required|date|after_or_equal:start_date',
+        'format' => 'required|in:Singles,Doubles,Mixed Doubles',
+        'description' => 'nullable|string',
+    ]);
 
-        // Create the tournament
-        Tournament::create($validated);
+    // 2. Create the tournament using the validated data
+    \App\Models\Tournament::create([
+        'name' => $validated['name'],
+        'start_date' => $validated['start_date'],
+        'end_date' => $validated['end_date'],
+        'format' => $validated['format'],
+        'description' => $validated['description'],
+    ]);
 
-        return redirect('/admin/dashboard')->with('success', 'Tournament created successfully!');
-    }
+    // 3. Redirect back to the admin dashboard
+    return redirect()->route('admin.dashboard')->with('success', 'Tournament published successfully!');
+}
 }

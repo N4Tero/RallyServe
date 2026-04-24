@@ -1,56 +1,78 @@
 <x-layout>
-  <div style="background-color: #f9fafb; min-height: calc(100vh - 70px); padding: 3rem 1rem;">
-    <div style="max-width: 600px; margin: 0 auto;">
+  <div style="background-color: #f9fafb; min-height: calc(100vh - 70px); padding: 4rem 1rem;">
+    
+    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 3rem; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 25px rgba(0,0,0,0.05);">
       
-      <div style="text-align: center; margin-bottom: 2rem;">
-        <h1 style="font-size: 2.2rem; font-weight: 800; color: #1f2937;">Secure Your Court</h1>
-        <p style="color: #6b7280; font-size: 1.05rem;">Pick a date and time for your match.</p>
-      </div>
+      <h2 style="font-size: 2.2rem; font-weight: 900; color: #1f2937; margin-top: 0; margin-bottom: 2rem; text-align: center;">Reserve a Court</h2>
 
-      <div style="background: white; border-radius: 16px; padding: 2.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.05); border: 1px solid #e5e7eb;">
-        
-        <form action="/bookings" method="POST" style="display: flex; flex-direction: column; gap: 1.5rem;">
-          @csrf
+      @if($errors->any())
+        <div style="background-color: #fee2e2; border-left: 4px solid #ef4444; color: #b91c1c; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+            <p style="font-weight: bold; margin: 0 0 0.5rem 0;">Booking Failed</p>
+            <ul style="margin: 0; padding-left: 1.5rem;">
+            @foreach($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+            </ul>
+        </div>
+      @endif
 
-          <div>
-            <label for="court_name" style="display: block; font-weight: 700; color: #374151; margin-bottom: 0.5rem;">Court Facility</label>
-            <input type="text" id="court_name" name="court_name" value="{{ $courtName }}" readonly
-                   style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f3f4f6; color: #4b5563; font-weight: 600; font-size: 1rem; outline: none; box-sizing: border-box;">
-            @error('court_name') <span style="color: #dc2626; font-size: 0.85rem;">{{ $message }}</span> @enderror
-          </div>
+      <form action="{{ route('book.store') }}" method="POST">
+        @csrf
 
-          <div>
-            <label for="booking_date" style="display: block; font-weight: 700; color: #374151; margin-bottom: 0.5rem;">Date</label>
-            <input type="date" id="booking_date" name="booking_date" min="{{ date('Y-m-d') }}" required
-                   style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; color: #1f2937; outline: none; box-sizing: border-box;">
-            @error('booking_date') <span style="color: #dc2626; font-size: 0.85rem;">{{ $message }}</span> @enderror
-          </div>
+        <div style="margin-bottom: 1.5rem;">
+            <label for="court_id" style="display: block; color: #374151; font-weight: 800; margin-bottom: 0.5rem;">Select Facility</label>
+            <select name="court_id" id="court_id" required 
+                    style="width: 100%; padding: 0.9rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb; font-size: 1rem; outline: none; cursor: pointer; box-sizing: border-box;">
+                <option value="" disabled {{ !request('preselected_court') ? 'selected' : '' }}>-- Choose an available court --</option>
+                
+                @foreach($courts as $court)
+                    <option value="{{ $court->id }}" {{ request('preselected_court') == $court->id ? 'selected' : '' }}>
+                        {{ $court->facility->facility_name }} - {{ $court->court_name }} (₱{{ $court->hourly_rate }}/hr)
+                    </option>
+                @endforeach
+            </select>
+        </div>
 
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;">
-            <div>
-              <label for="start_time" style="display: block; font-weight: 700; color: #374151; margin-bottom: 0.5rem;">Start Time</label>
-              <input type="time" id="start_time" name="start_time" required
-                     style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; color: #1f2937; outline: none; box-sizing: border-box;">
-              @error('start_time') <span style="color: #dc2626; font-size: 0.85rem;">{{ $message }}</span> @enderror
+        <div style="margin-bottom: 1.5rem;">
+            <label for="booking_date" style="display: block; color: #374151; font-weight: 800; margin-bottom: 0.5rem;">Play Date</label>
+            <input type="date" name="booking_date" id="booking_date" min="{{ date('Y-m-d') }}" required 
+                   style="width: 100%; padding: 0.9rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb; font-size: 1rem; outline: none; box-sizing: border-box;">
+        </div>
+
+        <div style="display: flex; gap: 1.5rem; margin-bottom: 2.5rem;">
+            <div style="flex: 1;">
+                <label for="start_time" style="display: block; color: #374151; font-weight: 800; margin-bottom: 0.5rem;">Start Time</label>
+                <input type="time" name="start_time" id="start_time" required 
+                       style="width: 100%; padding: 0.9rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb; font-size: 1rem; outline: none; box-sizing: border-box;">
             </div>
-
-            <div>
-              <label for="end_time" style="display: block; font-weight: 700; color: #374151; margin-bottom: 0.5rem;">End Time</label>
-              <input type="time" id="end_time" name="end_time" required
-                     style="width: 100%; padding: 0.85rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; font-size: 1rem; color: #1f2937; outline: none; box-sizing: border-box;">
-              @error('end_time') <span style="color: #dc2626; font-size: 0.85rem;">{{ $message }}</span> @enderror
+            <div style="flex: 1;">
+                <label for="end_time" style="display: block; color: #374151; font-weight: 800; margin-bottom: 0.5rem;">End Time</label>
+                <input type="time" name="end_time" id="end_time" required 
+                       style="width: 100%; padding: 0.9rem 1rem; border: 1px solid #d1d5db; border-radius: 8px; background-color: #f9fafb; font-size: 1rem; outline: none; box-sizing: border-box;">
             </div>
-          </div>
+        </div>
 
-          <div style="margin-top: 1rem;">
-            <button type="submit" class="btn btn-primary" style="width: 100%; padding: 1rem; font-size: 1.1rem; font-weight: 800; border-radius: 8px; border: none; cursor: pointer;">
-              Confirm Reservation
-            </button>
-          </div>
-
-        </form>
-      </div>
-
+        <button type="submit" 
+                style="width: 100%; background-color: #14a84d; color: white; padding: 1.2rem; border-radius: 50px; font-size: 1.1rem; font-weight: 800; border: none; cursor: pointer; box-shadow: 0 4px 6px rgba(20, 168, 77, 0.2);">
+            Confirm Reservation Request
+        </button>
+      </form>
     </div>
   </div>
+
+  <script>
+      document.addEventListener("DOMContentLoaded", function() {
+          const startTimeInput = document.getElementById('start_time');
+          const endTimeInput = document.getElementById('end_time');
+
+          startTimeInput.addEventListener('change', function() {
+              if(this.value) {
+                  endTimeInput.min = this.value;
+                  if(endTimeInput.value && endTimeInput.value <= this.value) {
+                      endTimeInput.value = '';
+                  }
+              }
+          });
+      });
+  </script>
 </x-layout>

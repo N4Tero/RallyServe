@@ -1,102 +1,98 @@
 <x-layout>
-  <div style="background-color: #ffffff; min-height: calc(100vh - 70px); padding: 2rem 1rem;">
-    <div class="admin-container">
-      
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h1 style="font-size: 2.2rem; color: #000000; font-weight: 900; letter-spacing: -0.5px;">Facility Management</h1>
-          <p style="color: #6b7280; font-size: 1.05rem;">Gensan Smash Arena - Staff Dashboard</p>
-        </div>
-        
-        <a href="/admin/tournaments/create" class="btn btn-primary" style="display: flex; align-items: center; gap: 0.5rem;">
-          <svg width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"></path></svg>
-          Add Tournament
-        </a>
-      </div>
-
-      <div class="metrics-grid">
-        
-        <div class="metric-card">
-          <div class="metric-icon icon-green">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h.01M15 12h.01M12 15h.01"></path></svg>
-          </div>
-          <div class="metric-info">
-            <p>Today's Bookings</p>
-            <h3>24</h3>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-icon icon-blue">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path></svg>
-          </div>
-          <div class="metric-info">
-            <p>Active Players</p>
-            <h3>18</h3>
-          </div>
-        </div>
-
-        <div class="metric-card">
-          <div class="metric-icon icon-green">
-            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-          </div>
-          <div class="metric-info">
-            <p>Court Utilization</p>
-            <h3>85%</h3>
-          </div>
-        </div>
-
-      </div>
-
-      <div style="max-width: 850px;">
-        <div class="schedule-card">
-          
-          <div class="schedule-header">
-            <h2>Today's Schedule</h2>
-            <p>Recent and upcoming reservations for your courts.</p>
-          </div>
-
-          <div class="schedule-list">
+    <div style="background-color: #f3f4f6; min-height: 100vh; padding: 2rem 1rem;">
+        <div style="max-width: 1100px; margin: 0 auto;">
             
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h4>Maria Santos</h4>
-                <p>06:00 PM - 07:00 PM • Court 1</p>
-              </div>
-              <div class="schedule-actions">
-                <span class="status-badge status-confirmed">Confirmed</span>
-                <button class="btn-manage">Manage</button>
-              </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h1 style="font-size: 1.8rem; font-weight: 900; color: #111827;">Staff Approval Portal</h1>
+                <span style="background: #14a84d; color: white; padding: 0.5rem 1rem; border-radius: 50px; font-weight: bold; font-size: 0.8rem;">
+                    Admin Session Active
+                </span>
             </div>
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem;">
+    <a href="{{ route('tournaments.create') }}" 
+       style="background: #1f2937; color: white; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem; transition: 0.3s;">
+       <span>🏆</span> Add New Tournament
+    </a>
 
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h4>Carlos Reyes</h4>
-                <p>07:00 PM - 09:00 PM • Court 2</p>
-              </div>
-              <div class="schedule-actions">
-                <span class="status-badge status-checked">Checked In</span>
-                <button class="btn-manage">Manage</button>
-              </div>
+    <a href="#" 
+       style="background: white; color: #1f2937; border: 1px solid #e5e7eb; padding: 0.8rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 0.5rem;">
+       <span>📍</span> Manage Facilities
+    </a>
+</div>
+            @if(session('success'))
+                <div style="background: #dcfce7; border-left: 4px solid #14a84d; color: #166534; padding: 1rem; margin-bottom: 1.5rem; border-radius: 4px;">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            <div style="background: white; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05);">
+                <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                    <thead style="background: #f9fafb; border-bottom: 1px solid #e5e7eb;">
+                        <tr>
+                            <th style="padding: 1rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase;">Reference / User</th>
+                            <th style="padding: 1rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase;">Court & Facility</th>
+                            <th style="padding: 1rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase;">Date & Time</th>
+                            <th style="padding: 1rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase;">Status</th>
+                            <th style="padding: 1rem; color: #6b7280; font-size: 0.75rem; text-transform: uppercase;">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody style="color: #374151; font-size: 0.9rem;">
+                        @foreach($bookings as $booking)
+                        <tr style="border-bottom: 1px solid #f3f4f6;">
+                            <td style="padding: 1.2rem 1rem;">
+                                <div style="font-weight: 800; color: #111827;">{{ $booking->reference_number }}</div>
+                                <div style="font-size: 0.8rem; color: #6b7280;">{{ $booking->user->name }}</div>
+                            </td>
+                            <td style="padding: 1.2rem 1rem;">
+                                <div style="font-weight: 600;">{{ $booking->court->court_name }}</div>
+                                <div style="font-size: 0.8rem; color: #6b7280;">{{ $booking->court->facility->facility_name }}</div>
+                            </td>
+                            <td style="padding: 1.2rem 1rem;">
+                                <div>{{ date('M d, Y', strtotime($booking->booking_date)) }}</div>
+                                <div style="font-size: 0.8rem; color: #14a84d; font-weight: 700;">
+                                    {{ date('h:i A', strtotime($booking->start_time)) }} - {{ date('h:i A', strtotime($booking->end_time)) }}
+                                </div>
+                            </td>
+                            <td style="padding: 1.2rem 1rem;">
+                                @php
+                                    $colors = [
+                                        'Pending' => ['bg' => '#fef3c7', 'text' => '#92400e'],
+                                        'Approved' => ['bg' => '#dcfce7', 'text' => '#166534'],
+                                        'Cancelled' => ['bg' => '#fee2e2', 'text' => '#991b1b'],
+                                    ];
+                                    $style = $colors[$booking->status] ?? $colors['Pending'];
+                                @endphp
+                                <span style="background: {{ $style['bg'] }}; color: {{ $style['text'] }}; padding: 0.25rem 0.75rem; border-radius: 50px; font-size: 0.75rem; font-weight: 700;">
+                                    {{ $booking->status }}
+                                </span>
+                            </td>
+                            <td style="padding: 1.2rem 1rem;">
+                                <div style="display: flex; gap: 0.5rem;">
+                                    @if($booking->status === 'Pending')
+                                        <form action="{{ route('admin.bookings.status', $booking) }}" method="POST">
+                                            @csrf @method('PATCH')
+                                            <input type="hidden" name="status" value="Approved">
+                                            <button type="submit" style="background: #14a84d; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">Approve</button>
+                                        </form>
+                                        
+                                        <form action="{{ route('admin.bookings.status', $booking) }}" method="POST">
+                                            @csrf @method('PATCH')
+                                            <input type="hidden" name="status" value="Cancelled">
+                                            <button type="submit" style="background: white; color: #991b1b; border: 1px solid #fee2e2; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-size: 0.8rem; font-weight: bold;">Reject</button>
+                                        </form>
+                                    @else
+                                        <span style="color: #9ca3af; font-style: italic; font-size: 0.8rem;">No actions available</span>
+                                    @endif
+                                </div>
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                <div style="padding: 1rem; background: #f9fafb;">
+                    {{ $bookings->links() }}
+                </div>
             </div>
-
-            <div class="schedule-item">
-              <div class="schedule-info">
-                <h4>Ana Garcia</h4>
-                <p>08:00 PM - 09:00 PM • Court 1</p>
-              </div>
-              <div class="schedule-actions">
-                <span class="status-badge status-pending">Pending</span>
-                <button class="btn-manage">Manage</button>
-              </div>
-            </div>
-
-          </div>
-
-          <a href="#" class="view-all-link">View All Bookings</a>
         </div>
-      </div>
-
     </div>
-  </div>
 </x-layout>

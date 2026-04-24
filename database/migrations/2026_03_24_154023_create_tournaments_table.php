@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('tournaments', function (Blueprint $table) {
-            $table->id();
-            $table->string('title');               // e.g., Gensan Summer Smash 2026
-            $table->string('date_range');          // e.g., March 15-16, 2026
-            $table->string('format');              // e.g., Mixed Doubles
-            $table->string('status');              // e.g., open, soon, or closed
-            $table->string('prize_details');       // e.g., ₱50,000 Total Prize Pool
-            $table->string('registration_link')->nullable(); // Optional link if using external forms
-            $table->timestamps();
+$table->id();
+        $table->string('name'); // This is your 'tournament_name'
+        $table->date('start_date');
+        $table->date('end_date');
+        $table->string('format'); // Singles, Doubles, Mixed
+        $table->text('description')->nullable();
+        $table->string('image_path')->nullable(); // For posters later
+        $table->timestamps();
         });
     }
 

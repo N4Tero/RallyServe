@@ -6,14 +6,27 @@ use Illuminate\Http\Request;
 use App\Models\Tournament;
 class AdminController extends Controller
 {
-    public function dashboard()
-    {
-        // Fetch all tournaments, newest first
-        $tournaments = Tournament::latest()->get();
+   public function dashboard()
+{
+    // Fetch bookings with their related user, court, and facility data
+    $bookings = \App\Models\Booking::with(['user', 'court.facility'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(10);
 
-        // Pass that data into our new admin view
-        return view('admin.dashboard', ['tournaments' => $tournaments]);
-    }
+    return view('admin.dashboard', compact('bookings'));
+}
+
+// Add this new function to handle the status changes
+public function updateStatus(Request $request, \App\Models\Booking $booking)
+{
+    $request->validate([
+        'status' => 'required|in:Approved,Cancelled,Pending'
+    ]);
+
+    $booking->update(['status' => $request->status]);
+
+    return back()->with('success', "Booking {$booking->reference_number} has been {$request->status}.");
+}
     // --- 1. Show the Form ---
     public function create()
     {

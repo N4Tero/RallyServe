@@ -7,11 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Tournament extends Model
 {
     protected $fillable = [
-        'title', 
-        'date_range', 
-        'format', 
-        'status', 
-        'prize_details', 
-        'registration_link'
+        'name',      // Make sure this is 'name', NOT 'title'
+    'start_date',
+    'end_date',
+    'format',
+    'description',
     ];
 }

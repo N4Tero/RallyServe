@@ -24,27 +24,38 @@
     </div>
 
     <div style="max-width: 1200px; margin: 3rem auto 0; padding: 0 1rem;">
-      
-      <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 2rem;">
+    
+    @foreach($courts as $court)
+      <div style="background: white; border-radius: 16px; border: 1px solid #e5e7eb; overflow: hidden; transition: 0.3s ease;">
         
-        <div style="background: white; border-radius: 16px; border: 1px solid #e5e7eb; overflow: hidden; transition: 0.3s ease;">
-          <div style="height: 200px; background: #e5e7eb url('https://images.unsplash.com/photo-1622279457486-62dcc4a631d6?q=80&w=800&auto=format&fit=crop') center/cover;"></div>
-          <div style="padding: 1.5rem;">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-               <h3 style="font-size: 1.25rem; font-weight: 800; margin: 0;">JG Oranza Sports Center Arena</h3>
-               <span style="font-size: 0.8rem; color: #14a84d; font-weight: 700;">★ 4.8</span>
-            </div>
-            <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem;">📍 Buayan, General Santos</p>
+        <div style="height: 200px; background: #e5e7eb url('{{ asset('storage/' . $court->facility->facility_image) }}') center/cover;"></div>
+        
+        <div style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+            <h3 style="font-size: 1.25rem; font-weight: 800; margin: 0;">{{ $court->facility->facility_name }} - {{ $court->court_name }}</h3>
+            <span style="font-size: 0.8rem; color: #14a84d; font-weight: 700;">★ 4.8</span>
+          </div>
+          
+          <p style="color: #6b7280; font-size: 0.9rem; margin-bottom: 1.5rem;">📍 {{ $court->facility->address }}</p>
+          
+          <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3f4f6; padding-top: 1rem;">
+            <span style="font-weight: 800; color: #1f2937;">₱{{ number_format($court->hourly_rate, 0) }} <small style="font-weight: 400; color: #6b7280;">/ hr</small></span>
             
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f3f4f6; padding-top: 1rem;">
-                <span style="font-weight: 800; color: #1f2937;">₱350 <small style="font-weight: 400; color: #6b7280;">/ hr</small></span>
-                
-                <a href="/bookings/create?court=JG+Oranza+Sports+Center+Arena" class="btn btn-primary" style="padding: 0.5rem 1.25rem; border-radius: 50px; text-decoration: none; font-size: 0.85rem;">Book Now</a>
-            </div>
+            <a href="{{ route('book.create', ['preselected_court' => $court->id]) }}" 
+               class="btn btn-primary" 
+               style="padding: 0.5rem 1.25rem; border-radius: 50px; text-decoration: none; font-size: 0.85rem; background-color: #14a84d; color: white; font-weight: bold;">
+               Book Now
+            </a>
           </div>
         </div>
-
-        </div>
+      </div>
+    @endforeach
     </div>
+  
+  <div style="margin-top: 2.5rem;">
+      {{ $courts->withQueryString()->links() }}
+  </div>
+</div>
   </div>
 </x-layout>

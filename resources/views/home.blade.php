@@ -49,37 +49,35 @@
       <div class="tournaments-grid">
         
       @forelse ($tournaments as $tournament)
-          <div class="tournament-card">
-            <div class="card-top">
-              <div>
-                <h3 class="card-title">{{ $tournament->title }}</h3>
-                <div class="card-meta">
-                  <span>📅 {{ $tournament->date_range }}</span>
-                  <span>👥 {{ $tournament->format }}</span>
-                </div>
-              </div>
-              
-              @if($tournament->status === 'Registration Open')
-                <span class="badge badge-open">Registration Open</span>
-              @elseif($tournament->status === 'Soon')
-                <span class="badge badge-soon">Soon</span>
-              @else
-                <span class="badge" style="background: #fee2e2; color: #991b1b;">Closed</span>
-              @endif
-            </div>
-            
-            <div class="card-bottom">
-              <span class="prize-pool" style="{{ $tournament->status !== 'Registration Open' ? 'color: #6b7280;' : '' }}">
-                ⚡ {{ $tournament->prize_details }}
-              </span>
-              
-              @if($tournament->status === 'Registration Open')
-                <a href="{{ $tournament->registration_link ?? '#' }}" target="_blank" class="btn btn-primary btn-register">Register Now</a>
-              @else
-                <button class="btn btn-notify" disabled>Notify Me</button>
-              @endif
-            </div>
-          </div>
+          <div style="background: white; border-radius: 12px; padding: 1.5rem; border: 1px solid #e5e7eb; margin-bottom: 1rem; position: relative;">
+    
+    <span style="position: absolute; top: 1rem; right: 1rem; background: #fee2e2; color: #991b1b; padding: 0.2rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-weight: 800; text-transform: uppercase;">
+        Open
+    </span>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+        <h3 style="margin: 0; font-size: 1.2rem; font-weight: 900; color: #111827;">
+            {{ $tournament->name }}
+        </h3>
+
+        <div style="display: flex; align-items: center; gap: 1rem; color: #6b7280; font-size: 0.85rem;">
+            <span>👥 {{ $tournament->format }}</span>
+            <span>📅 {{ date('M d', strtotime($tournament->start_date)) }} - {{ date('M d, Y', strtotime($tournament->end_date)) }}</span>
+        </div>
+
+        @if($tournament->description)
+            <p style="margin: 0.5rem 0 1rem; color: #4b5563; font-size: 0.9rem; line-height: 1.5;">
+                ⚡ {{ Str::limit($tournament->description, 100) }}
+            </p>
+        @endif
+
+        <div style="display: flex; justify-content: flex-end;">
+            <button style="background: #f3f4f6; color: #9ca3af; border: none; padding: 0.6rem 1.2rem; border-radius: 50px; font-weight: 700; font-size: 0.85rem; cursor: not-allowed;">
+                Notify Me
+            </button>
+        </div>
+    </div>
+</div>
 
         @empty
           <div style="grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; color: #6b7280; background: white; border-radius: 12px; border: 1px dashed #d1d5db;">
